@@ -67,7 +67,7 @@ public class UniverseGuard {
 	/**
 	 * Plugin Version
 	 */
-	public static final String VERSION = "2.17";
+	public static final String VERSION = "2.17.1";
     /**
      * Region Version Number
      */
@@ -87,7 +87,7 @@ public class UniverseGuard {
 	/**
 	 * Plugin Author
 	 */
-	public static final String AUTHOR = "JimiIT92, Brycey92, eheimer";
+	public static final String AUTHOR = "JimiIT92, Brycey92, eheimer, DeaSTL";
 	/**
 	 * The Hunger Flag Timer update frequency (in seconds)
 	 */
@@ -304,7 +304,7 @@ public class UniverseGuard {
 		CommandSpec regionGreeting = CommandUtils.buildCommandSpec("Set the greeting message of a region", new RegionGreetingExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("message")));
 		CommandSpec regionCopy = CommandUtils.buildCommandSpec("Copy a region into a new one", new RegionCopyExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("name")), GenericArguments.remainingJoinedStrings(Text.of("newRegion")));
 		CommandSpec regionAt = CommandUtils.buildCommandSpec("Tells wich region are at the give location", new RegionAtExecutor(), GenericArguments.location(Text.of("location")));
-		CommandSpec regionCreate = CommandUtils.buildCommandSpec("Create a region at thge specified location", new RegionCreateExecutor(), RegionPermission.ALL.getValue(), GenericArguments.integer(Text.of("x1")), GenericArguments.integer(Text.of("y1")), GenericArguments.integer(Text.of("z1")), GenericArguments.integer(Text.of("x2")), GenericArguments.integer(Text.of("y2")), GenericArguments.integer(Text.of("z2")), GenericArguments.catalogedElement(Text.of("dimension"), DimensionType.class), GenericArguments.string(Text.of("world")), GenericArguments.remainingJoinedStrings(Text.of("name")));
+		CommandSpec regionCreate = CommandUtils.buildCommandSpec("Create a region at thge specified location", new RegionCreateExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("name")));
 		CommandSpec regionSet = CommandUtils.buildCommandSpec("Set a point of a pending region", new RegionSetExecutor(), RegionPermission.ALL.getValue(), new RegionPointCommandElement(Text.of("point")), GenericArguments.integer(Text.of("x")), GenericArguments.integer(Text.of("y")), GenericArguments.integer(Text.of("z")));
         CommandSpec regionAddEffect = CommandUtils.buildCommandSpec("Add a potion effect to a Region", new RegionAddEffectExecutor(), RegionPermission.ALL.getValue(), GenericArguments.catalogedElement(Text.of("effect"), PotionEffectType.class), GenericArguments.integer(Text.of("level")));
         CommandSpec regionRemoveEffect = CommandUtils.buildCommandSpec("Remove a potion effect to a Region", new RegionRemoveEffectExecutor(), RegionPermission.ALL.getValue(), GenericArguments.catalogedElement(Text.of("effect"), PotionEffectType.class));

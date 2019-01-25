@@ -12,6 +12,8 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.DimensionType;
 
 import com.universeguard.region.LocalRegion;
@@ -30,12 +32,32 @@ public class RegionCreateExecutor implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-		if(args.hasAny("x1") && args.hasAny("y1") && args.hasAny("z1") && args.hasAny("x2") && args.hasAny("y2") && args.hasAny("z2") && args.hasAny("name") && args.hasAny("dimension")) {
-			DimensionType dimension = args.<DimensionType>getOne("dimension").get();
-			String world = args.<String>getOne("world").get();
+
+		if(args.hasAny("name") && RegionUtils.hasPendingRegion(src)) {
+			LocalRegion selectedRegion = (LocalRegion) RegionUtils.getPendingRegion(src);
+			Player player = (Player) src;
+
+			RegionLocation firstSelectedPoint = selectedRegion.getFirstPoint();
+			RegionLocation secondSelectedPoint = selectedRegion.getSecondPoint();
+
+
+			DimensionType dimension = player.getWorld().getDimension().getType();
+			String world = player.getWorld().getName();
 			String name = args.<String>getOne("name").get();
-			RegionLocation firstPoint = new RegionLocation(args.<Integer>getOne("x1").get(), args.<Integer>getOne("y1").get(), args.<Integer>getOne("z1").get(), dimension.getId(), world);
-			RegionLocation secondPoint = new RegionLocation(args.<Integer>getOne("x2").get(), args.<Integer>getOne("y2").get(), args.<Integer>getOne("z2").get(), dimension.getId(), world);
+			RegionLocation firstPoint = new RegionLocation(
+					firstSelectedPoint.getX(),
+					firstSelectedPoint.getY(),
+					firstSelectedPoint.getZ(),
+					dimension.getId(),
+					world
+			);
+			RegionLocation secondPoint = new RegionLocation(
+					secondSelectedPoint.getX(),
+					secondSelectedPoint.getY(),
+					secondSelectedPoint.getZ(),
+					dimension.getId(),
+					world
+			);
 			LocalRegion region = new LocalRegion(name, firstPoint, secondPoint, false);
 			if(RegionUtils.save(region))
 				MessageUtils.sendSuccessMessage(src, RegionText.REGION_SAVED.getValue());
