@@ -62,6 +62,9 @@ public class RegionCreateExecutor implements CommandExecutor {
 			if(RegionUtils.save(region))
 				MessageUtils.sendSuccessMessage(src, RegionText.REGION_SAVED.getValue());
 		}
+		if(!RegionUtils.hasPendingRegion(src)){
+			MessageUtils.sendErrorMessage(src, RegionText.NO_PENDING_REGION.getValue());
+		}
 		return CommandResult.empty();
 	}
 }

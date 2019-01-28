@@ -62,12 +62,16 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
  * @author Jimi
  *
  */
-@Plugin(id = UniverseGuard.ID, name = UniverseGuard.NAME, version = UniverseGuard.VERSION, description = UniverseGuard.DESCRIPTION, authors = UniverseGuard.AUTHOR)
+@Plugin(id = UniverseGuard.ID,
+		name = UniverseGuard.NAME,
+		version = UniverseGuard.VERSION,
+		description = UniverseGuard.DESCRIPTION,
+		authors = UniverseGuard.AUTHOR)
 public class UniverseGuard {
 	/**
 	 * Plugin Version
 	 */
-	public static final String VERSION = "2.17.1";
+	public static final String VERSION = "2.18";
     /**
      * Region Version Number
      */
@@ -286,38 +290,184 @@ public class UniverseGuard {
 	 * Register commands
 	 */
 	private void registerCommands() {
-		CommandSpec regionSave = CommandUtils.buildCommandSpec("Save a region", new RegionSaveExecutor(), RegionPermission.ALL.getValue());
-		CommandSpec regionName = CommandUtils.buildCommandSpec("Set the name of a region", new RegionNameExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("name")));
-		CommandSpec regionDelete = CommandUtils.buildCommandSpec("Delete a region", new RegionDeleteExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("name")));
-		CommandSpec regionEdit = CommandUtils.buildCommandSpec("Allow editing a region", new RegionEditExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("name")));
-		CommandSpec regionInfo = CommandUtils.buildCommandSpec("Get informations about a region", new RegionInfoExecutor(), new RegionNameElement(Text.of("name")));
-		CommandSpec regionPriority = CommandUtils.buildCommandSpec("Set the priority of a region", new RegionPriorityExecutor(), RegionPermission.ALL.getValue(), GenericArguments.integer(Text.of("priority")));
-		CommandSpec regionSetTeleport = CommandUtils.buildCommandSpec("Set the teleport location of a region", new RegionSetTeleportExecutor(), RegionPermission.ALL.getValue(), GenericArguments.location(Text.of("location")));
-		CommandSpec regionSetSpawn = CommandUtils.buildCommandSpec("Set the spawn location of a region", new RegionSetSpawnExecutor(), RegionPermission.ALL.getValue(), GenericArguments.location(Text.of("location")));
-		CommandSpec regionTeleport = CommandUtils.buildCommandSpec("Teleports to a region teleport location", new RegionTeleportExecutor(), new RegionNameElement(Text.of("name")));
-		CommandSpec regionSpawn = CommandUtils.buildCommandSpec("Teleports to a region spawn location", new RegionSpawnExecutor(), new RegionNameElement(Text.of("name")));
-		CommandSpec regionList = CommandUtils.buildCommandSpec("Show the list of all regions", new RegionListExecutor());
-		CommandSpec regionGamemode = CommandUtils.buildCommandSpec("Set the gamemode of a region", new RegionGamemodeExecutor(), RegionPermission.ALL.getValue(), GenericArguments.catalogedElement(Text.of("gamemode"), GameMode.class));
-		CommandSpec regionHere = CommandUtils.buildCommandSpec("Tells wich region you are currently in", new RegionHereExecutor());
-		CommandSpec regionReload = CommandUtils.buildCommandSpec("Reload cached regions", new RegionReloadExecutor(), RegionPermission.ALL.getValue());
-		CommandSpec regionFarewell = CommandUtils.buildCommandSpec("Set the farewell message of a region", new RegionFarewellExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("message")));
-		CommandSpec regionGreeting = CommandUtils.buildCommandSpec("Set the greeting message of a region", new RegionGreetingExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("message")));
-		CommandSpec regionCopy = CommandUtils.buildCommandSpec("Copy a region into a new one", new RegionCopyExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("name")), GenericArguments.remainingJoinedStrings(Text.of("newRegion")));
-		CommandSpec regionAt = CommandUtils.buildCommandSpec("Tells wich region are at the give location", new RegionAtExecutor(), GenericArguments.location(Text.of("location")));
-		CommandSpec regionCreate = CommandUtils.buildCommandSpec("Create a region at thge specified location", new RegionCreateExecutor(), RegionPermission.ALL.getValue(), GenericArguments.remainingJoinedStrings(Text.of("name")));
-		CommandSpec regionSet = CommandUtils.buildCommandSpec("Set a point of a pending region", new RegionSetExecutor(), RegionPermission.ALL.getValue(), new RegionPointCommandElement(Text.of("point")), GenericArguments.integer(Text.of("x")), GenericArguments.integer(Text.of("y")), GenericArguments.integer(Text.of("z")));
-        CommandSpec regionAddEffect = CommandUtils.buildCommandSpec("Add a potion effect to a Region", new RegionAddEffectExecutor(), RegionPermission.ALL.getValue(), GenericArguments.catalogedElement(Text.of("effect"), PotionEffectType.class), GenericArguments.integer(Text.of("level")));
-        CommandSpec regionRemoveEffect = CommandUtils.buildCommandSpec("Remove a potion effect to a Region", new RegionRemoveEffectExecutor(), RegionPermission.ALL.getValue(), GenericArguments.catalogedElement(Text.of("effect"), PotionEffectType.class));
-        CommandSpec regionSetValue = CommandUtils.buildCommandSpec("Sets the value of a Region", new RegionSetValueExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("region")), GenericArguments.catalogedElement(Text.of("item"), ItemType.class), GenericArguments.integer(Text.of("quantity")));
-        CommandSpec regionRemoveValue = CommandUtils.buildCommandSpec("Remove a value from a Region", new RegionRemoveValueExecutor(), RegionPermission.ALL.getValue(), new RegionNameElement(Text.of("region")));
-        CommandSpec regionBuy = CommandUtils.buildCommandSpec("Buy a Region", new RegionBuyExecutor(), new RegionToBuyNameElement(Text.of("region")));
-        CommandSpec regionSell = CommandUtils.buildCommandSpec("Sells a Region", new RegionSellExecutor(), new RegionToSellNameElement(Text.of("region")));
-        CommandSpec regionExcludeBlock = CommandUtils.buildCommandSpec("Exclude a block from being handled by the place or the destroy flag", new RegionExcludeBlockExecutor(), RegionPermission.ALL.getValue(),  GenericArguments.catalogedElement(Text.of("block"), BlockType.class),  GenericArguments.enumValue(Text.of("type"), EnumRegionBlock.class));
-        CommandSpec regionIncludeBlock = CommandUtils.buildCommandSpec("Include a block from being handled by the place or the destroy flag", new RegionIncludeBlockExecutor(), RegionPermission.ALL.getValue(),  GenericArguments.catalogedElement(Text.of("block"), BlockType.class),  GenericArguments.enumValue(Text.of("type"), EnumRegionBlock.class));
-        CommandSpec regionTemplate = CommandUtils.buildCommandSpec("Sets or remove a pending Region from being a Template", new RegionTemplateExecutor(), RegionPermission.ALL.getValue(), new BooleanElement(Text.of("template")));
-        CommandSpec regionRemoveFarewell = CommandUtils.buildCommandSpec("Removes the farewell message from a Region", new RegionRemoveFarewellExecutor(), RegionPermission.ALL.getValue());
-        CommandSpec regionRemoveGreeting = CommandUtils.buildCommandSpec("Removes the greeting message from a Region", new RegionRemoveGreetingExecutor(), RegionPermission.ALL.getValue());
-        CommandSpec regionItemUse = CommandUtils.buildCommandSpec("Sets if you can or can't use an item inside a Region", new RegionItemUseExecutor(), RegionPermission.ALL.getValue(), new BooleanElement(Text.of("value")), GenericArguments.catalogedElement(Text.of("item"), ItemType.class));
+		CommandSpec regionSave = CommandUtils.buildCommandSpec(
+				"Save a region",
+				new RegionSaveExecutor(),
+				RegionPermission.ALL.getValue());
+		CommandSpec regionName = CommandUtils.buildCommandSpec(
+				"Set the name of a region",
+				new RegionNameExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.remainingJoinedStrings(Text.of("name")));
+		CommandSpec regionDelete = CommandUtils.buildCommandSpec(
+				"Delete a region",
+				new RegionDeleteExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionNameElement(Text.of("name")));
+		CommandSpec regionEdit = CommandUtils.buildCommandSpec(
+				"Allow editing a region",
+				new RegionEditExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionNameElement(Text.of("name")));
+		CommandSpec regionInfo = CommandUtils.buildCommandSpec(
+				"Get informations about a region",
+				new RegionInfoExecutor(),
+				new RegionNameElement(Text.of("name")));
+		CommandSpec regionPriority = CommandUtils.buildCommandSpec(
+				"Set the priority of a region",
+				new RegionPriorityExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.integer(Text.of("priority")));
+		CommandSpec regionSetTeleport = CommandUtils.buildCommandSpec(
+				"Set the teleport location of a region",
+				new RegionSetTeleportExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.location(Text.of("location")));
+		CommandSpec regionSetSpawn = CommandUtils.buildCommandSpec(
+				"Set the spawn location of a region",
+				new RegionSetSpawnExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.location(Text.of("location")));
+		CommandSpec regionTeleport = CommandUtils.buildCommandSpec(
+				"Teleports to a region teleport location",
+				new RegionTeleportExecutor(),
+				new RegionNameElement(Text.of("name")));
+		CommandSpec regionSpawn = CommandUtils.buildCommandSpec(
+				"Teleports to a region spawn location",
+				new RegionSpawnExecutor(),
+				new RegionNameElement(Text.of("name")));
+		CommandSpec regionList = CommandUtils.buildCommandSpec(
+				"Show the list of all regions",
+				new RegionListExecutor());
+		CommandSpec regionGamemode = CommandUtils.buildCommandSpec(
+				"Set the gamemode of a region",
+				new RegionGamemodeExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.catalogedElement(
+						Text.of("gamemode"),
+						GameMode.class));
+		CommandSpec regionHere = CommandUtils.buildCommandSpec(
+				"Tells wich region you are currently in",
+				new RegionHereExecutor());
+		CommandSpec regionReload = CommandUtils.buildCommandSpec(
+				"Reload cached regions",
+				new RegionReloadExecutor(),
+				RegionPermission.ALL.getValue());
+		CommandSpec regionFarewell = CommandUtils.buildCommandSpec(
+				"Set the farewell message of a region",
+				new RegionFarewellExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.remainingJoinedStrings(Text.of("message")));
+		CommandSpec regionGreeting = CommandUtils.buildCommandSpec(
+				"Set the greeting message of a region",
+				new RegionGreetingExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.remainingJoinedStrings(Text.of("message")));
+		CommandSpec regionCopy = CommandUtils.buildCommandSpec(
+				"Copy a region into a new one",
+				new RegionCopyExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionNameElement(Text.of("name")),
+				GenericArguments.remainingJoinedStrings(Text.of("newRegion")));
+		CommandSpec regionAt = CommandUtils.buildCommandSpec(
+				"Tells wich region are at the give location",
+				new RegionAtExecutor(),
+				GenericArguments.location(Text.of("location")));
+		CommandSpec regionCreate = CommandUtils.buildCommandSpec(
+				"Create a region at thge specified location",
+				new RegionCreateExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.remainingJoinedStrings(Text.of("name")));
+		CommandSpec regionSet = CommandUtils.buildCommandSpec(
+				"Set a point of a pending region",
+				new RegionSetExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionPointCommandElement(Text.of("point")),
+				GenericArguments.integer(Text.of("x")),
+				GenericArguments.integer(Text.of("y")),
+				GenericArguments.integer(Text.of("z")));
+        CommandSpec regionAddEffect = CommandUtils.buildCommandSpec(
+        		"Add a potion effect to a Region",
+				new RegionAddEffectExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.catalogedElement(
+						Text.of("effect"),
+						PotionEffectType.class),
+				GenericArguments.integer(Text.of("level")));
+        CommandSpec regionRemoveEffect = CommandUtils.buildCommandSpec(
+        		"Remove a potion effect to a Region",
+				new RegionRemoveEffectExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.catalogedElement(
+						Text.of("effect"),
+						PotionEffectType.class));
+        CommandSpec regionSetValue = CommandUtils.buildCommandSpec(
+        		"Sets the value of a Region",
+				new RegionSetValueExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionNameElement(
+						Text.of("region")),
+				GenericArguments.catalogedElement(
+						Text.of("item"),
+						ItemType.class),
+				GenericArguments.integer(Text.of("quantity")));
+        CommandSpec regionRemoveValue = CommandUtils.buildCommandSpec(
+        		"Remove a value from a Region",
+				new RegionRemoveValueExecutor(),
+				RegionPermission.ALL.getValue(),
+				new RegionNameElement(
+						Text.of("region")));
+        CommandSpec regionBuy = CommandUtils.buildCommandSpec(
+        		"Buy a Region",
+				new RegionBuyExecutor(),
+				new RegionToBuyNameElement(
+						Text.of("region")));
+        CommandSpec regionSell = CommandUtils.buildCommandSpec(
+        		"Sells a Region",
+				new RegionSellExecutor(),
+				new RegionToSellNameElement(
+						Text.of("region")));
+        CommandSpec regionExcludeBlock = CommandUtils.buildCommandSpec(
+        		"Exclude a block from being handled by the place or the destroy flag",
+				new RegionExcludeBlockExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.catalogedElement(
+						Text.of("block"),
+						BlockType.class),
+				GenericArguments.enumValue(
+						Text.of("type"),
+						EnumRegionBlock.class));
+        CommandSpec regionIncludeBlock = CommandUtils.buildCommandSpec(
+        		"Include a block from being handled by the place or the destroy flag",
+				new RegionIncludeBlockExecutor(),
+				RegionPermission.ALL.getValue(),
+				GenericArguments.catalogedElement(
+						Text.of("block"),
+						BlockType.class),
+				GenericArguments.enumValue(
+						Text.of("type"),
+						EnumRegionBlock.class));
+        CommandSpec regionTemplate = CommandUtils.buildCommandSpec(
+        		"Sets or remove a pending Region from being a Template",
+				new RegionTemplateExecutor(),
+				RegionPermission.ALL.getValue(),
+				new BooleanElement(Text.of("template")));
+        CommandSpec regionRemoveFarewell = CommandUtils.buildCommandSpec(
+        		"Removes the farewell message from a Region",
+				new RegionRemoveFarewellExecutor(),
+				RegionPermission.ALL.getValue());
+        CommandSpec regionRemoveGreeting = CommandUtils.buildCommandSpec(
+        		"Removes the greeting message from a Region",
+				new RegionRemoveGreetingExecutor(),
+				RegionPermission.ALL.getValue());
+        CommandSpec regionItemUse = CommandUtils.buildCommandSpec(
+        		"Sets if you can or can't use an item inside a Region",
+				new RegionItemUseExecutor(),
+				RegionPermission.ALL.getValue(),
+				new BooleanElement(Text.of("value")),
+				GenericArguments.catalogedElement(
+						Text.of("item"),
+						ItemType.class));
 
 		CommandSpec regionFlagInfo = CommandSpec.builder().description(Text.of("Get informations about a flag in a region"))
 				.executor(new RegionFlagInfoExecutor())
